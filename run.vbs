@@ -24,7 +24,12 @@
  Err.Clear
  On Error goto 0
 
-'main installation process
+ 'Check if folder exists
+ if not oFSO.FolderExists(sDestinationFolder) then
+     oFSO.CreateFolder(sDestinationFolder)
+ end if
+
+ 'main installation process
  for each sFile in Files
      If Not oFSO.FileExists(sDestinationFolder & "\" & oFSO.GetFileName(sFile)) and install=1 Then 
         oFSO.GetFile(sFile).Copy sDestinationFolder & "\" & oFSO.GetFileName(sFile),True 
@@ -33,7 +38,7 @@
              oFSO.DeleteFile sDestinationFolder & "\" & oFSO.GetFileName(sFile)
         end if
      elseif install=1 then
-         if msgbox("Program already installed do you want to uninstall ?",4) = 6 then
+         if msgbox("Program already installed do you want to uninstall ?",4,"num2curr") = 6 then
              install = -1
              oFSO.DeleteFile sDestinationFolder & "\" & oFSO.GetFileName(sFile)    
          else
